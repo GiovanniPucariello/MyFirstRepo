@@ -1,0 +1,15 @@
+@CHARSET "UTF-8";
+
+.mylink:link{
+	color:#FFA500;
+	text-decoration:none;
+}
+.mylink:visited{
+	color:#FFA500;
+	text-decoration:none;
+}
+.mylink:hover{
+	color:#ADFF2F;
+	text-decoration:none
+}
+

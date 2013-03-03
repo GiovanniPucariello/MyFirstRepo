@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts 
+    Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="default" extends="struts-default">
+	
+		<!-- 用户登录 -->
+		<action name="login" class="userAction" method="login">
+			<result name="admin_success" type="redirect">/admin/index.jsp</result>
+			<result name="manager_success" type="redirect">/manager/index.jsp</result>
+			<result name="customer_success" type="redirect">/customer/index.jsp</result>
+			<result name="error">/admin/loginError.jsp</result>
+		</action>
+		
+		<!-- 用户退出 -->
+		<action name="logout" class="userAction" method="logout">
+			<result name="success" type="redirect">/login.jsp</result>
+		</action>
+
+		<!-- 用户模块 -->
+
+		<!-- 查询用户信息 -->
+		<action name="queryUser" class="userAction" method="queryUser">
+			<result name="success">user.jsp</result>
+		</action>
+		
+		<!-- 分页查询用户信息 -->
+		<action name="queryUserByPage" class="userAction" method="queryUserByPage">
+			<result name="success">user.jsp</result>
+		</action>
+		
+		<!-- 显示用户详细信息 -->
+		<action name="moreInfo" class="userAction" method="moreInfo">
+			<result name="newCustomer" type="chain">customerInit</result>
+			<result name="customerInfo" type="chain">queryCustomerByPage</result>
+		</action>
+		
+		<!-- 查询单个用户信息 -->
+		<action name="queryUserByName" class="userAction" method="queryUserByName">
+			<result name="success">userRoleDistribute.jsp</result>
+		</action>
+		
+		<!-- 用户角色分派 -->
+		<action name="userRoleDistribute" class="userAction" method="queryUserForRoleDistribute">
+			<result name="success">userRoleDistribute.jsp</result>
+		</action>
+		
+		<!-- 用户角色修改 -->
+		<action name="modifyUserRole" class="userAction" method="modifyUserRole">
+			<result name="success">modifyUserRoleSuccess.jsp</result>
+			<result name="error">modifyError.jsp</result>
+		</action>
+
+		<!-- 用户修改 -->
+		<action name="modifyUser" class="userAction" method="modifyUser">
+			<result name="success">modifyUserSuccess.jsp</result>
+			<result name="error">modifyError.jsp</result>
+		</action>
+
+		<!-- 添加用户信息 -->
+		<action name="addUser" class="userAction" method="addUser">
+			<result name="success_info" type="chain">customerInit</result>
+			<result name="success">addUserSuccess.jsp</result>
+			<result name="error">addError.jsp</result>
+		</action>
+
+		<!-- 删除用户 -->
+		<action name="deleteUser" class="userAction" method="deleteUser">
+			<result name="success">deleteUserSuccess.jsp</result>
+			<result name="error">deleteError.jsp</result>
+		</action>
+		
+
+		<!-- 角色管理模块 -->
+
+		<!-- 查询角色信息  -->
+		<action name="queryRole" class="roleAction" method="queryRole">
+			<result name="success">role.jsp</result>
+		</action>
+		
+		<!-- 修改角色描述信息 -->
+		<action name="modifyRole" class="roleAction" method="modifyRole">
+			<result name="success">modifyRoleSuccess.jsp</result>
+			<result name="error">modifyError.jsp</result>
+		</action>
+		
+		<!-- 添加角色 -->
+		<action name="addRole" class="roleAction" method="addRole">
+			<result name="success">addRoleSuccess.jsp</result>
+			<result name="error">addError.jsp</result>
+		</action>
+		
+		<!-- 删除角色 -->
+		<action name="deleteRole" class="roleAction" method="deleteRole">
+			<result name="success">deleteRoleSuccess.jsp</result>
+			<result name="error">deleteError.jsp</result>
+		</action>
+		
+		<!-- Dealer经销商管理模块 -->
+		
+		<!-- 查询经销商信息 -->
+		<action name="queryDealer" class="dealerAction" method="queryDealer">
+			<result name="success">dealer.jsp</result>
+		</action>
+		
+		<!-- 添加供应商 -->
+		<action name="addDealer" class="dealerAction" method="addDealer">
+			<result name="success">addDealerSuccess.jsp</result>
+			<result name="error">addError.jsp</result>
+		</action>
+		
+		<!-- 修改经销商信息 -->
+		<action name="modifyDealer" class="dealerAction" method="modifyDealer">
+			<result name="success">modifyDealerSuccess.jsp</result>
+			<result name="error">modifyError.jsp</result>
+		</action>
+		
+		<!-- 删除经销商信息 -->
+		<action name="deleteDealer" class="dealerAction" method="deleteDealer">
+			<result name="success">deleteDealerSuccess.jsp</result>
+			<result name="error">deleteDealerError.jsp</result>
+		</action>
+		
+		<!-- UerProfile  Customer客户管理模块 -->
+		
+		<!-- 企业客户查询 -->
+		<action name="queryCustomer" class="customerAction" method="queryCustomer">
+		    <result name="success">customer.jsp</result>
+		</action>
+		
+		<!-- 企业客户分页查询 -->
+		<action name="queryCustomerByPage" class="customerAction" method="queryCustomerByPage">
+		    <result name="success">customer.jsp</result>
+		</action>
+		
+		<!-- 返回用户名、经销商列表 -->
+		<action name="customerInit" class="customerAction" method="getUDList">
+		    <result name="success">addCustomer.jsp</result>
+		</action>
+		
+		<!-- 添加客户信息 -->
+		<action name="addCustomer" class="customerAction" method="addCustomer">
+		    <result name="success">addCustomerSuccess.jsp</result>
+		    <result name="error">addError.jsp</result>
+		</action>
+		
+		<!-- 修改客户信息 -->
+		<action name="modifyCustomer" class="customerAction" method="modifyCustomer">
+			<result name="success">modifyCustomerSuccess.jsp</result>
+			<result name="error">modifyError.jsp</result>
+		</action>
+		
+		<!-- 删除客户信息 -->
+		<action name="deleteCustomer" class="customerAction" method="deleteCustomer">
+			<result name="success">deleteCustomerSuccess.jsp</result>
+			<result name="error">deleteError.jsp</result>
+		</action>
+		
+		<!-- Product产品管理模块 -->
+		<!-- 分页查询产品信息 -->
+		<action name="queryProductByPage" class="productAction" method="queryProductByPage">
+			<result name="success">product.jsp</result>
+		</action>
+		
+		<!-- 添加产品信息 -->
+		<action name="addProduct" class="productAction" method="addProduct">
+			<result name="success">addProductSuccess.jsp</result>
+			<result name="error">addError.jsp</result>
+		</action>
+		
+		<!-- 删除产品信息 -->
+		<action name="deleteProduct" class="productAction" method="deleteProduct">
+			<result name="success">deleteProductSuccess.jsp</result>
+			<result name="error">deleteError.jsp</result>
+		</action>
+		
+		<!-- 修改产品信息 -->
+		<action name="modifyProduct" class="productAction" method="modifyProduct">
+			<result name="success">modifyProductSuccess.jsp</result>
+			<result name="error">modifyError.jsp</result>
+		</action>
+		
+		<!-- Publish发布管理模块 -->
+		
+		<!-- 删除产品发布信息 -->
+		<action name="deletePublish" class="publishAction" method="deletePublish">
+			<result name="success">deletePublishProductSuccess.jsp</result>
+			<result name="error">deleteError.jsp</result>
+		</action>
+		
+		<!-- 查询产品发布信息 -->
+		<action name="queryPublishByPage" class="publishAction" method="queryPublishByPage">
+			<result name="success">publish.jsp</result>
+		</action>
+		
+		<!-- 初始化产品发布 -->
+		<action name="publishInit" class="publishAction" method="publishInit">
+			<result name="success">publishProduct.jsp</result>
+		</action>
+		
+		<!-- 发布产品信息 -->
+		<action name="publish" class="publishAction" method="publish">
+			<result name="success">publishSuccess.jsp</result>
+			<result name="error">publishError.jsp</result>
+		</action>
+	</package>
+</struts>

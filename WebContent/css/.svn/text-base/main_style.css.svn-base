@@ -1,0 +1,15 @@
+@CHARSET "UTF-8";
+/*  
+body {
+  	font: arial, helvetica, sans-serif;
+	background:#87D8F8;
+}
+*/
+
+body {
+	color: black;
+	font-size: 12px;
+	font-family: 宋体;
+	background: #EEEEEE url(../images/bg.gif) left top repeat-x;
+	text-align: center; margin: 0; padding: 0;
+}

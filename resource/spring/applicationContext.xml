@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+    http://www.springframework.org/schema/beans 
+    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+    http://www.springframework.org/schema/aop
+    http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
+	<!-- 配置Hibernate支持 -->
+	<!-- 采用c3p0连接池 -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<property name="driverClass" value="com.mysql.jdbc.Driver" />
+		
+		<!-- 数据库连接URL -->
+		<property name="jdbcUrl"
+			value="jdbc:mysql://localhost:3306/team7?useUnicode=true&amp;characterEncoding=UTF-8" />
+		<property name="user" value="root" />
+		<property name="password" value="admin" />
+		
+		<!-- 初始化时获取的连接数，取值应在minPoolSize与maxPoolSize之间。Default：3 -->
+		<property name="initialPoolSize" value="1" />
+		<!-- 连接池中保留的最小/最大连接数 -->
+		<property name="minPoolSize" value="1" />
+		<property name="maxPoolSize" value="2" />
+		<!-- 最大空闲时间，60秒内未使用则连接被丢弃。若为0则永不丢弃。Default：0 -->
+		<property name="maxIdleTime" value="60" />
+		<!-- 当连接池中的连接耗尽的时候c3p0一次同时获取的连接数。Default：3 -->
+		<property name="acquireIncrement" value="5" />
+		<!-- 每60秒检查所有连接池中的空闲连接。Default：0 -->
+		<property name="idleConnectionTestPeriod" value="60" />
+	</bean>
+
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">
+					org.hibernate.dialect.MySQLDialect
+				</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.format_sql">true</prop>
+			</props>
+		</property>
+		<property name="mappingResources">
+			<list>
+				<value>hbm/role.hbm.xml</value>
+				<value>hbm/user.hbm.xml</value>
+				<value>hbm/dealer.hbm.xml</value>
+				<value>hbm/product.hbm.xml</value>
+				<value>hbm/product_dealer.hbm.xml</value>
+				<value>hbm/user_profile.hbm.xml</value>
+			</list>
+		</property>
+	</bean>
+	<!-- 事务管理器 -->
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory">
+			<ref local="sessionFactory" />
+		</property>
+	</bean>
+	
+	<!-- struts2 -->
+	
+	<!-- User模块的配置  -->
+	<bean id="userDao" class="com.hp.team7.dao.UserDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="userService" class="com.hp.team7.service.UserService">
+		<property name="userDao" ref="userDao" />
+	</bean>
+	
+	<bean id="userAction" class="com.hp.team7.action.UserAction">
+		<property name="userService" ref="userService" />
+		<property name="customerService" ref="customerService" ></property>
+	</bean>
+	
+	
+	<!-- Role模块的配置 -->
+	<bean id="roleDao" class="com.hp.team7.dao.RoleDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="roleService" class="com.hp.team7.service.RoleService">
+		<property name="roleDao" ref="roleDao" />
+	</bean>
+
+	<bean id="roleAction" class="com.hp.team7.action.RoleAction">
+		<property name="roleService" ref="roleService" />
+	</bean>
+	
+	<!-- Dealer 经销商管理模块的配置 -->
+	<bean id="dealerDao" class="com.hp.team7.dao.DealerDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="dealerService" class="com.hp.team7.service.DealerService">
+		<property name="dealerDao" ref="dealerDao" />
+		<property name="customerDao" ref="customerDao" />
+	</bean>
+
+	<bean id="dealerAction" class="com.hp.team7.action.DealerAction">
+		<property name="dealerService" ref="dealerService" />
+	</bean>
+	
+	
+	<!--Customer 客户管理模块配置 -->
+	<bean id="customerDao" class="com.hp.team7.dao.CustomerDao">
+	    <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="customerService" class="com.hp.team7.service.CustomerService">
+	    <property name="customerDao" ref="customerDao" />
+	    <property name="userDao" ref="userDao" />
+	</bean>
+	
+	<bean id="customerAction" class="com.hp.team7.action.CustomerAction">
+	    <property name="customerService" ref="customerService" />
+	    <property name="userService" ref="userService" />
+	    <property name="dealerService" ref="dealerService" />
+	</bean>
+	
+	<!-- 产品管理模块配置 -->
+	<bean id="productDao" class="com.hp.team7.dao.ProductDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="productService" class="com.hp.team7.service.ProductService">
+		<property name="productDao" ref="productDao" />
+	</bean>
+
+	<bean id="productAction" class="com.hp.team7.action.ProductAction">
+		<property name="productService" ref="productService" />
+	</bean>
+	
+	<!-- 发布管理模块配置 -->
+	<bean id="publishDao" class="com.hp.team7.dao.PublishDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="publishService" class="com.hp.team7.service.PublishService">
+		<property name="publishDao" ref="publishDao" />
+	</bean>
+
+	<bean id="publishAction" class="com.hp.team7.action.PublishAction">
+		<property name="publishService" ref="publishService" />
+		<property name="dealerService" ref="dealerService"  />
+		<property name="productService" ref="productService"  />
+	</bean>
+	
+</beans>

@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+   "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!--上面四行对所有的hibernate映射文件都相同 -->
+<!-- hibernate-mapping是映射文件的根元素 -->
+<hibernate-mapping>
+	<!-- 每个class元素对应一个持久化对象 -->
+	<class name="com.hp.team7.vo.Role"
+		table="role">
+		<id name="id" column="id">
+			<generator class="identity" />
+		</id>
+		<property name="name" column="name" />
+		<property name="description" column="description" />
+		
+		<!--映射集合属性，关联到持久化类 -->
+		<set name="users" inverse="true" cascade="all">
+			<!-- 一对多中，KEY代表对方表中产生关联关系的字段值 -->
+			<key column="role_id"></key>
+			<one-to-many class="com.hp.team7.vo.User" />
+		</set>
+	</class>
+</hibernate-mapping>

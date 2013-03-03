@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+   "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!--上面四行对所有的hibernate映射文件都相同 -->
+<!-- hibernate-mapping是映射文件的根元素 -->
+<hibernate-mapping>
+	<!-- 每个class元素对应一个持久化对象 -->
+	<class name="com.hp.team7.vo.ProductDealer" table="product_dealer">
+		<id name="id" column="id">
+			<generator class="identity" />
+		</id>
+		<property name="description" column="description" />
+		
+		<many-to-one name="dealer" class="com.hp.team7.vo.Dealer"
+			column="dealer_id" cascade="none">
+		</many-to-one>
+		
+		<many-to-one name="product" class="com.hp.team7.vo.Product"
+			column="product_id" cascade="none">
+		</many-to-one>
+
+	</class>
+</hibernate-mapping>

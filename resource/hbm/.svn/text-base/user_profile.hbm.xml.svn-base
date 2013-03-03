@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+   "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!--上面四行对所有的hibernate映射文件都相同 -->
+<!-- hibernate-mapping是映射文件的根元素 -->
+<hibernate-mapping>
+	<!-- 每个class元素对应一个持久化对象 -->
+	<class name="com.hp.team7.vo.UserProfile" table="user_profile">
+		<id name="id" column="id">
+			<generator class="identity" />
+		</id>
+		<property name="realName" column="real_name" />
+		<property name="department" column="department" />
+		<property name="position" column="position" />
+		<property name="email" column="email" />
+		<property name="phone" column="phone" />
+		<property name="mobile" column="mobile" />
+		<property name="fax" column="fax" />
+		<property name="address" column="address" />
+		<property name="description" column="description" />
+		
+		<!-- 双向一对多关联映射，一个Role对应多个User,在一的一端采用key标签，多的一端采用many-to-one标签 -->
+		<many-to-one name="dealer" class="com.hp.team7.vo.Dealer"
+			column="dealer_id" cascade="none">
+		</many-to-one>
+		
+		 <many-to-one name="user" column="user_id" class="com.hp.team7.vo.User" unique="true" >
+		 </many-to-one> 
+	</class>
+</hibernate-mapping>

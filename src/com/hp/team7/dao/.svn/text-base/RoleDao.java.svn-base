@@ -1,0 +1,103 @@
+package com.hp.team7.dao;
+
+import java.util.List;
+
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import com.hp.team7.vo.Role;
+
+/**
+ * 角色信息管理
+ * @author 石辉
+ *
+ */
+public class RoleDao extends HibernateDaoSupport  {
+	
+	/**
+	 * 查询角色信息
+	 * @param roleName
+	 * @return roleList List<Role>
+	 */
+	public List<Role> queryRole(String roleName) {
+		
+		String hql="from Role as role where 1=1";
+		if(!"".equals(roleName)){
+			hql += " and role.name='" + roleName +"'";
+		}
+		
+		@SuppressWarnings("unchecked")
+		List<Role> roleList = getHibernateTemplate().find(hql);
+		
+		if(roleList != null && roleList.size() > 0) {
+			return roleList;
+		} else {
+			return null;
+		}
+	}
+	
+	
+	/**
+	 * 添加角色
+	 * @param name
+	 * @param description
+	 * @return boolean
+	 */
+	public boolean addRole(String name,String description){
+		Session session=getSession();
+		Transaction tx=session.beginTransaction();
+		try{
+			tx.begin();
+			
+			Role role=new Role();
+			role.setName(name);
+			role.setDescription(description);
+			
+			session.save(role);
+			tx.commit();
+			return true;
+		}catch(Exception e){
+			return false;
+		}finally{
+			session.close();
+		}
+	}
+	
+	
+	/**
+	 * 删除角色
+	 * @param roleName
+	 * @return boolean
+	 */
+	public boolean deleteRole(int id){
+		try{
+			Role role = new Role();
+			role.setId(id);
+			getHibernateTemplate().delete(role);
+			return true;
+		}catch(Exception e){
+			return false;
+		}
+	}
+	
+	
+	/**
+	 * 修改角色描述信息
+	 * @param id
+	 * @param description
+	 * @return boolean
+	 */
+	public boolean modifyRole(int id, String description, String name){
+		try{
+			Role role = new Role();
+			role.setId(id);
+			role.setDescription(description);
+			role.setName(name);
+			getHibernateTemplate().update(role);
+			return true;
+		}catch(Exception e){
+			return false;
+		}
+	}
+
+}
